@@ -26,6 +26,9 @@ export class CredentialService {
         error(err: any) {
           reject(err)
         },
+        complete() {
+          console.log("finished");
+        },
       }))
     })
   }
