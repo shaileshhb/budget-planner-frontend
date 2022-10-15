@@ -1,0 +1,39 @@
+<div class="bg-lg-blue h-100-vh d-flex flex-column justify-content-center">
+  <div class="container">
+    <div class="d-flex justify-content-center">
+      <div class="card card-width rounded shadow">
+        <div class="card-body">
+          <div class="card-title text-justify">
+            <h3><strong>Login</strong></h3>
+            <p class="card-subtitle">Hey, Enter your details to get sign in to your account</p>
+          </div>
+          <div class="pt-3">
+            <div class="d-flex flex-column">
+              <form [formGroup]="loginForm">
+                <div class="form-floating mb-3">
+                  <input formControlName="email" type="email" class="form-control" id="emailFloatingInput"
+                    placeholder="Enter email address">
+                  <label for="emailFloatingInput">Email address</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <input formControlName="password" type="password" class="form-control" id="passwordFloatingInput"
+                    placeholder="Password">
+                  <label for="passwordFloatingInput">Password</label>
+                </div>
+                <div class="mb-3">
+                  <button type="submit" class="btn-blue w-100 py-2 rounded" (click)="validateForm()">
+                    <strong>Sign in</strong>
+                  </button>
+                </div>
+              </form>
+              <div class="pt-3">
+                <label>Don't have an account?</label>
+                <a class="anchor-tag" routerLink="/register"> Register Now</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

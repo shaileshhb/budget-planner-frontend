@@ -1,1 +1,33 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+:root {
+  --primaryColor: #E73A00;
+  --secondaryColor: #F69037;
+  --primaryTextColor: #F6430F;
+  --blue: #004DC0;
+  --red: #FC4347;
+  --light-blue: #f0f8ff;
+  --primaryButtonColor: var(--primaryColor);
+  --secondaryButtonColor: var(--secondaryColor);
+
+}
+
+.bg-lg-blue {
+  background-color: var(--light-blue);
+}
+
+.btn-blue {
+  background-color: var(--blue);
+  color: #fff;
+  border: 1px solid var(--blue);
+}
+
+html {
+  zoom: 1;
+  scroll-behavior: smooth;
+}
+
+.h-100-vh {
+  height: 100vh;
+}
