@@ -1,6 +1,7 @@
+import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CredentialService } from 'src/app/service/credential/credential.service';
+import { CredentialService, ICredential } from 'src/app/service/credential/credential.service';
 
 @Component({
   selector: 'app-login',
@@ -33,13 +34,15 @@ export class LoginComponent implements OnInit {
   }
 
   async login(): Promise<void> {
-    try {
-      const response = await this.credService.login(this.loginForm.value)
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-      alert(error)
-    }
+    this.credService.login(this.loginForm.value).subscribe({
+      next: (response: HttpResponse<ICredential>) => {
+        console.log(response.body);
+      },
+      error: (err: any) => {
+        console.error(err);
+        alert(err)
+      }
+    })
   }
 
 }

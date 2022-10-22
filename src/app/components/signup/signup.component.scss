@@ -1,0 +1,28 @@
+.card-width {
+  width: 50%;
+}
+
+.anchor-tag {
+  text-decoration: none;
+  color: var(--blue);
+}
+
+.pt-15 {
+  padding-top: 15rem;
+}
+
+// ===================================== MEDIA QUERIES ===================================== 
+
+@media screen and (max-width: 1000px) {
+  .card-width {
+    width: 80%;
+  }
+}
+
+
+@media screen and (max-width: 700px) {
+  .card-width {
+    width: 100%;
+  }
+
+}

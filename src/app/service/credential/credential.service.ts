@@ -14,26 +14,14 @@ export class CredentialService {
     private httpClient: HttpClient,
   ) { }
 
-  login(login: ILogin): Promise<ICredential | null> {
-    return new Promise<ICredential | null>((resolve, reject) => {
-      this.httpClient.post(`${this.baseURL}/login`, login, {
-        headers: new HttpHeaders({ 'Content-type': 'application/json' }),
-        observe: "response",
-      }).subscribe(({
-        next(value: HttpResponse<ICredential>) {
-          resolve(value.body)
-        },
-        error(err: any) {
-          reject(err)
-        },
-        complete() {
-          console.log("finished");
-        },
-      }))
+  login(login: ILogin): Observable<HttpResponse<ICredential>> {
+    return this.httpClient.post<ICredential>(`${this.baseURL}/login`, login, {
+      headers: new HttpHeaders({ 'Content-type': 'application/json' }),
+      observe: "response",
     })
   }
 
-  register(user: IUser): Observable<HttpResponse<IUser>> {
+  register(user: IUser): Observable<HttpResponse<ICredential>> {
     return this.httpClient.post(`${this.baseURL}/register`, user, {
       headers: new HttpHeaders({ 'Content-type': 'application/json' }),
       observe: "response",
@@ -62,5 +50,6 @@ export interface IUser {
 export interface ICredential {
   id?: string
   name?: string
+  isVerified?: boolean
   token?: string
 }
