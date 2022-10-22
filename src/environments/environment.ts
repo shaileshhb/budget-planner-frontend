@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  BASEURL: 'http://127.0.0.1:5000/api/v1/budget-planner'
+  BASEURL: 'http://127.0.0.1:5000/api/v1/budget-planner',
+  SECRET_KEY: "d08h5kOZiYrsz7AzxAM6",
 };
 
 /*
