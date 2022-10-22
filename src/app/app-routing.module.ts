@@ -6,7 +6,10 @@ import { SignupComponent } from './components/signup/signup.component';
 const routes: Routes = [
   { path: "login", component: LoginComponent },
   { path: "register", component: SignupComponent },
-  { path: "", pathMatch: 'full', redirectTo: "login"}
+  {
+    path: "envelop", loadChildren: () => import("./envelop/envelop.module").then(e => e.EnvelopModule)
+  },
+  { path: "", pathMatch: 'full', redirectTo: "login" }
 ];
 
 @NgModule({
