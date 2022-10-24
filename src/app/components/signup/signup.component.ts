@@ -1,7 +1,9 @@
 import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { CredentialService, ICredential, IUser } from 'src/app/service/credential/credential.service';
+import { LocalService } from 'src/app/shared/service/local/local.service';
 
 @Component({
   selector: 'app-signup',
@@ -12,6 +14,8 @@ export class SignupComponent implements OnInit {
 
   constructor(
     private credService: CredentialService,
+    private localService: LocalService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -41,10 +45,18 @@ export class SignupComponent implements OnInit {
     this.register()
   }
 
+  credential: ICredential | null = null
+
   async register(): Promise<void> {
     this.credService.register(this.signupForm.value).subscribe({
       next: (response: HttpResponse<ICredential>) => {
         console.log(response.body);
+        this.credential = response.body
+        this.localService.setJsonValue("userId", this.credential?.id)
+        this.localService.setJsonValue("name", this.credential?.name)
+        this.localService.setJsonValue("token", this.credential?.token)
+        this.localService.setJsonValue("isVerified", this.credential?.isVerified)
+        this.router.navigate(["envelop", "dashboard"])
       },
       error: (err: any) => {
         console.error(err);

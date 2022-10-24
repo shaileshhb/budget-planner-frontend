@@ -1,0 +1,114 @@
+<div class="container pt-5">
+  <div class="d-flex justify-content-end mb-3">
+    <button *ngIf="!isGetCompleted" class="btn btn-dark disabled placeholder w-10"></button>
+    <button *ngIf="isGetCompleted" type="button" class="btn btn-dark" (click)="onAddClick()">
+      Add Envelop
+    </button>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-4 g-4" *ngIf="!isGetCompleted">
+    <div class="col">
+      <div class="card h-100" aria-hidden="true">
+        <div class="card-body">
+          <h5 class="card-title placeholder-glow">
+            <div class="d-flex justify-content-between">
+              <span class="placeholder rounded w-50"></span>
+              <span class="placeholder rounded w-25"></span>
+            </div>
+          </h5>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card h-100" aria-hidden="true">
+        <div class="card-body">
+          <h5 class="card-title placeholder-glow">
+            <div class="d-flex justify-content-between">
+              <span class="placeholder rounded w-50"></span>
+              <span class="placeholder rounded w-25"></span>
+            </div>
+          </h5>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card h-100" aria-hidden="true">
+        <div class="card-body">
+          <h5 class="card-title placeholder-glow">
+            <div class="d-flex justify-content-between">
+              <span class="placeholder rounded w-50"></span>
+              <span class="placeholder rounded w-25"></span>
+            </div>
+          </h5>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card h-100" aria-hidden="true">
+        <div class="card-body">
+          <h5 class="card-title placeholder-glow">
+            <div class="d-flex justify-content-between">
+              <span class="placeholder rounded w-50"></span>
+              <span class="placeholder rounded w-25"></span>
+            </div>
+          </h5>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-4 g-4">
+    <ng-container *ngFor="let envelop of envelops">
+      <div class="col">
+        <div class="card h-100 cursor-pointer" (click)="onUpdateClick(envelop)">
+          <div class="card-body">
+            <div class="d-flex justify-content-between">
+              <h5 class="card-title">{{envelop.name}}</h5>
+              <h5 class="card-title">{{envelop.amount | currency: 'INR'}}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
+
+
+<ng-template #envelopModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{isAddOperation ? 'Add Envelop' : (isUpdateOperation ? 'Update Envelop' : 'Envelop')}}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+
+  <div class="modal-body">
+    <div class="row">
+      <form [formGroup]="envelopForm">
+        <div class="form-floating mb-3">
+          <input formControlName="name" type="text" class="form-control" id="nameFloatingInput"
+            placeholder="Eg.: Shopping" [ngClass]="((envelopForm.get('name')?.dirty || envelopForm.get('name')?.touched) && 
+              (envelopForm.get('name')?.invalid)) ? 'is-invalid' : ''">
+          <label for="nameFloatingInput">Name</label>
+          <div class="invalid-feedback">
+            Name must be specified
+          </div>
+        </div>
+        <div class="form-floating mb-3">
+          <input formControlName="amount" type="number" class="form-control" id="amountFloatingInput"
+            placeholder="Eg.: 1000" [ngClass]="((envelopForm.get('amount')?.dirty || envelopForm.get('amount')?.touched) && 
+              (envelopForm.get('amount')?.invalid)) ? 'is-invalid' : ''">
+          <label for="amountFloatingInput">Budget Amount</label>
+          <div class="invalid-feedback">
+            Amount must be specified
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="onSaveClick()">Save</button>
+  </div>
+</ng-template>

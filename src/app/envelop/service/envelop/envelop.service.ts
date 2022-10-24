@@ -19,26 +19,32 @@ export class EnvelopService {
 
   getEnvelops(params?: HttpParams): Observable<HttpResponse<IEnvelop[]>> {
     return this.httpClient.get<IEnvelop[]>(`${this.baseURL}/envelops`, {
-      headers: new HttpHeaders({ "Authorization": "Bearer" + this.localService.getJsonValue("token") }),
+      headers: new HttpHeaders({ "Authorization": "Bearer " + this.localService.getJsonValue("token") }),
       observe: "response", params: params
     })
   }
 
-  addEnvelop(userId: string, envelop: IEnvelop): Observable<string> {
-    return this.httpClient.post<string>(`${this.baseURL}/user/${userId}`, envelop, {
-      headers: new HttpHeaders({ "Authorization": "Bearer" + this.localService.getJsonValue("token") })
+  addEnvelop(envelop: IEnvelop): Observable<any> {
+    let userId: string = this.localService.getJsonValue("userId")
+
+    return this.httpClient.post<string>(`${this.baseURL}/user/${userId}/envelops`, envelop, {
+      headers: new HttpHeaders({ "Authorization": "Bearer " + this.localService.getJsonValue("token") })
     })
   }
 
-  updateEnvelop(userId: string, envelop: IEnvelop): Observable<string> {
+  updateEnvelop(envelop: IEnvelop): Observable<string> {
+    let userId: string = this.localService.getJsonValue("userId")
+    
     return this.httpClient.put<string>(`${this.baseURL}/user/${userId}/envelops/${envelop.id}`, envelop, {
-      headers: new HttpHeaders({ "Authorization": "Bearer" + this.localService.getJsonValue("token") })
+      headers: new HttpHeaders({ "Authorization": "Bearer " + this.localService.getJsonValue("token") })
     })
   }
   
-  deleteEnvelop(userId: string, envelopId: string): Observable<string> {
+  deleteEnvelop(envelopId: string): Observable<string> {
+    let userId: string = this.localService.getJsonValue("userId")
+
     return this.httpClient.delete<string>(`${this.baseURL}/user/${userId}/envelops/${envelopId}`, {
-      headers: new HttpHeaders({ "Authorization": "Bearer" + this.localService.getJsonValue("token") })
+      headers: new HttpHeaders({ "Authorization": "Bearer " + this.localService.getJsonValue("token") })
     })
   }
 }
