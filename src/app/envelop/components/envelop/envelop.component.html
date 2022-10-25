@@ -6,6 +6,7 @@
     </button>
   </div>
 
+  <!-- template loader -->
   <div class="row row-cols-1 row-cols-md-4 g-4" *ngIf="!isGetCompleted">
     <div class="col">
       <div class="card h-100" aria-hidden="true">
@@ -63,11 +64,40 @@
   <div class="row row-cols-1 row-cols-md-4 g-4">
     <ng-container *ngFor="let envelop of envelops">
       <div class="col">
-        <div class="card h-100 cursor-pointer" (click)="onUpdateClick(envelop)">
+        <div class="card h-100">
           <div class="card-body">
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between cursor-pointer" (click)="onUpdateClick(envelop)">
               <h5 class="card-title">{{envelop.name}}</h5>
               <h5 class="card-title">{{envelop.amount | currency: 'INR'}}</h5>
+            </div>
+            <div class="py-3">
+              <ngb-progressbar type="{{envelop.type}}" class="cursor-pointer"
+                [value]='(envelop.totalSpending! / envelop.amount) * 100' [striped]="true" [animated]="true"
+                (click)="envelop.showSpending = !envelop.showSpending">
+                {{envelop.totalSpending! | currency: 'INR'}}
+              </ngb-progressbar>
+            </div>
+            <div class="pb-3" *ngIf="envelop.showSpending">
+              <ng-container *ngIf="envelop.spendings && envelop.spendings!.length > 0; else noSpendingTemplate">
+                <div class="table-responsive">
+                  <table class="table table-borderless">
+                    <thead>
+                      <tr>
+                        <th>Sr no.</th>
+                        <th>Payee</th>
+                        <th>Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let spending of envelop.spendings; let i = index">
+                        <td>{{i+1}}</td>
+                        <td>{{spending.payee}}</td>
+                        <td>{{spending.amount}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </ng-container>
             </div>
           </div>
         </div>
@@ -76,6 +106,9 @@
   </div>
 </div>
 
+<ng-template #noSpendingTemplate>
+  <h6 class="text-center">No spending yet :)</h6>
+</ng-template>
 
 <ng-template #envelopModal let-modal>
   <div class="modal-header">

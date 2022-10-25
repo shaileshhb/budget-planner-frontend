@@ -35,16 +35,34 @@ export class EnvelopComponent implements OnInit {
     this.envelopService.getEnvelops(queryparams).subscribe({
       next: (response: HttpResponse<IEnvelop[]>) => {
         this.envelops = response.body
+        this.calculateTotalSpending()
         console.log(response.body);
       },
       error: (err: any) => {
         console.error(err);
         alert(err?.error?.error)
-      },
-      complete: () => {
-        this.isGetCompleted = true
       }
+    }).add(() => {
+      this.isGetCompleted = true
     })
+  }
+
+  calculateTotalSpending(): void {
+    for (let index = 0; index < this.envelops!.length; index++) {
+      const envelop = this.envelops![index]
+      envelop.showSpending = false
+      envelop.totalSpending = 0
+      for (let j = 0; j < envelop.spendings!.length; j++) {
+        envelop.totalSpending += parseInt(envelop.spendings![j].amount!)
+      }
+      envelop.type = ((envelop.totalSpending / envelop.amount) * 100 <= 50) ? 'success' : (((envelop.totalSpending / envelop.amount) * 100 <= 75) ? 'warning' : 'danger')
+    }
+  }
+
+  currentEnvelop!: IEnvelop
+
+  onProgressClick(envelop: IEnvelop): void {
+    this.currentEnvelop = envelop  
   }
 
   envelopForm!: FormGroup
