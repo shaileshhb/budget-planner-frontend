@@ -1,15 +1,24 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
 
 const routes: Routes = [
-  { path: "login", component: LoginComponent },
-  { path: "register", component: SignupComponent },
   {
-    path: "envelop", loadChildren: () => import("./envelop/envelop.module").then(e => e.EnvelopModule)
+    path: "login",
+    loadComponent: () => import("./components/login/login.component").then(l => l.LoginComponent),
   },
-  { path: "", pathMatch: 'full', redirectTo: "login" }
+  {
+    path: "register",
+    loadComponent: () => import("./components/signup/signup.component").then(s => s.SignupComponent),
+  },
+  // {
+  //   path: "register",
+  //   component: SignupComponent,
+  // },
+  {
+    path: "envelop",
+    loadChildren: () => import("./envelop/envelop.module").then(e => e.EnvelopModule)
+  },
 ];
 
 @NgModule({

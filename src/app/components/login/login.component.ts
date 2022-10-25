@@ -1,14 +1,21 @@
+import { CommonModule } from '@angular/common';
 import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CredentialService, ICredential } from 'src/app/service/credential/credential.service';
 import { LocalService } from 'src/app/shared/service/local/local.service';
+import { SignupComponent } from '../signup/signup.component';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+  ],
 })
 export class LoginComponent implements OnInit {
 
@@ -55,6 +62,11 @@ export class LoginComponent implements OnInit {
         alert(err)
       }
     })
+  }
+
+  navigateToRegister(): void {
+    console.log("navigateToRegister");
+    this.router.navigate(['register'])
   }
 
 }
