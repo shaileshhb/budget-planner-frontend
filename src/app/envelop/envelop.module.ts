@@ -6,7 +6,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { EnvelopService } from './service/envelop/envelop.service';
 import { EnvelopComponent } from './components/envelop/envelop.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -18,7 +18,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     EnvelopRoutingModule,
     NgbModule,
-    ReactiveFormsModule,
+    SharedModule
   ],
   providers: [EnvelopService],
 })
