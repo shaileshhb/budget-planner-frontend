@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpResponse } from '@angular/common/http';
+import { HttpClientModule, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -14,7 +14,11 @@ import { LocalService } from 'src/app/shared/service/local/local.service';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-  ]
+    HttpClientModule,
+  ],
+  providers: [
+    CredentialService,
+  ],
 })
 export class SignupComponent implements OnInit {
 
