@@ -11,6 +11,10 @@ const routes: Routes = [
     path: "register",
     loadComponent: () => import("./components/signup/signup.component").then(s => s.SignupComponent),
   },
+  {
+    path: "account",
+    loadComponent: () => import("./components/user-account/user-account.component").then(a => a.UserAccountComponent),
+  },
   // {
   //   path: "register",
   //   component: SignupComponent,
