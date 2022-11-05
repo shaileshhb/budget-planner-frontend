@@ -1,35 +1,69 @@
-<div class="container">
-  <ng-container *ngIf="userAccounts.length > 0">
-    <div class="table-responsive">
-      <tabele class="table table-bordered table-hover">
-        <thead>
-          <tr>
-            <th>Sr No</th>
-            <th>Name</th>
-            <th>Amount</th>
-            <th>Delete</th>
-          </tr>
-        </thead>
-        <tbody>
-          <ng-container *ngFor="let userAccount of userAccounts; let i = index">
-            <tr (click)="onEditClick(userAccount)">
-              <td>{{ i + 1}}</td>
-              <td>{{userAccount.name}}</td>
-              <td>{{userAccount.account}}</td>
-              <td>
-                <button class="btn btn-danger" type="button" (click)="onDeleteClick(userAccount)">Delete
-                </button>
-              </td>
+<div class="container pt-5">
+  <div class="d-flex justify-content-between mb-3">
+    <h3>Total amount - {{totalAmount}}</h3>
+    <button type="button" class="btn btn-dark" (click)="onAddClick()">
+      Add Account
+    </button>
+  </div>
+
+  <ng-container *ngIf="userAccounts.length > 0 || isAddOperation">
+    <form [formGroup]="accountForm">
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th class="text-center">Sr No</th>
+              <th>Name</th>
+              <th>Amount</th>
+              <th class="text-center">Delete</th>
             </tr>
-          </ng-container>
-        </tbody>
-      </tabele>
-    </div>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let userAccount of userAccounts; let i = index">
+              <tr (click)="onEditClick(userAccount)">
+                <td class="text-center">{{ i + 1}}</td>
+                <td>{{userAccount.name}}</td>
+                <td>{{userAccount.amount}}</td>
+                <td class="text-center">
+                  <button class="btn" type="button" (click)="onDeleteClick(userAccount)">
+                    <i class="material-icons-outlined text-danger">delete</i>
+                  </button>
+                </td>
+              </tr>
+            </ng-container>
+            <ng-container *ngIf="isAddOperation">
+              <tr>
+                <td class="text-center">
+                  <button type="submit" class="btn" (click)="onSubmitClick()">
+                    <i class="material-icons-outlined">check_circle</i>
+                  </button>
+                </td>
+                <td>
+                  <input type="text" class="form-control" formControlName="name" placeholder="Eg: My Account">
+                </td>
+                <td>
+                  <input type="number" class="form-control" formControlName="amount" placeholder="Eg: 10000">
+                </td>
+                <td class="text-center">
+                  <button type="reset" class="btn" (click)="cancelAdd()">
+                    <i class="material-icons-outlined">cancel</i>
+                  </button>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </form>
   </ng-container>
 </div>
 
 
 
-<ng-template #errorTemplate>
-  <span class="toast-font"><strong>{{errorMessage}}</strong></span>
+<ng-template #messageTemplate>
+  <span class="toast-font"><strong>{{message}}</strong></span>
+</ng-template>
+
+<ng-template #addOperationTemplate>
+  <span class="toast-font"><strong>Adding account...</strong></span>
 </ng-template>

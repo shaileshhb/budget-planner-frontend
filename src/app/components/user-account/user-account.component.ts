@@ -27,6 +27,7 @@ export class UserAccountComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.createAccountForm()
     this.getUserAccounts()
   }
 
@@ -34,31 +35,37 @@ export class UserAccountComponent implements OnInit {
 
   createAccountForm(): void {
     this.accountForm = new FormGroup({
-      id: new FormControl<string | null>(null, [Validators.required]),
+      id: new FormControl<string | null>(null),
       name: new FormControl<string | null>(null, [Validators.required]),
       userId: new FormControl<string>(this.localService.getJsonValue("userId")),
-      account: new FormControl<number>(0, [Validators.required, Validators.min(1)]),
+      amount: new FormControl<number>(0, [Validators.required, Validators.min(1)]),
     })
   }
 
   userAccounts: IUserAccount[] = []
   totalAmount: number = 0
-  errorMessage: string = ""
+  message: string = ""
 
-  @ViewChild("errorTemplate") errorTemplate!: TemplateRef<any>
+  @ViewChild("messageTemplate") messageTemplate!: TemplateRef<any>
 
   getUserAccounts(): void {
     this.userAccounts = []
     this.totalAmount = 0
-    this.accountService.getUserAccounts().subscribe({
+
+    const queryparams: any = {
+      userId: this.localService.getJsonValue("userId")
+    }
+
+    this.accountService.getAccounts(queryparams).subscribe({
       next: (response: HttpResponse<IUserAccount[]>) => {
         this.userAccounts = response.body!
+        console.log(this.userAccounts);
         this.calculateTotalAmount()
       },
       error: (err: any) => {
         console.error(err);
-        this.errorMessage = err?.error?.error
-        this.toastService.show(this.errorTemplate, { classname: 'bg-danger text-light', delay: 5000 })
+        this.message = err?.error?.error
+        this.toastService.show(this.messageTemplate, { classname: 'bg-danger text-light', delay: 5000 })
       }
     })
   }
@@ -67,7 +74,86 @@ export class UserAccountComponent implements OnInit {
     this.userAccounts.filter((value: IUserAccount) => this.totalAmount += value.amount)
   }
 
+  isAddOperation: boolean = false
+
+  onAddClick(): void {
+    this.isAddOperation = true
+    this.createAccountForm()
+  }
+
+  cancelAdd(): void {
+    this.isAddOperation = false
+    this.accountForm.reset()
+  }
+
+  onEditClick(userAccount: IUserAccount): void {
+    this.isAddOperation = false
+    this.createAccountForm()
+    this.accountForm.patchValue(userAccount)
+  }
+
   onDeleteClick(userAccount: IUserAccount): void {
     console.log(userAccount);
   }
+
+  onSubmitClick(): void {
+    console.log(this.accountForm.controls);
+
+    if (this.accountForm.invalid) {
+      this.accountForm.markAllAsTouched()
+      return
+    }
+
+    if (this.isAddOperation) {
+      this.addUserAccount()
+      return
+    }
+
+    this.updateUserAccount()
+  }
+
+  @ViewChild('addOperationTemplate') addOperationTemplate!: TemplateRef<any>
+
+  addUserAccount(): void {
+    this.toastService.show(this.addOperationTemplate, { classname: 'bg-info text-light', delay: 5000 })
+
+    this.accountService.addUserAccount(this.accountForm.value).subscribe({
+      next: (response: any) => {
+        console.log(response);
+        this.message = "Account successfully added"
+        this.toastService.show(this.messageTemplate, { classname: 'bg-success text-light', delay: 5000 })
+        this.accountForm.reset()
+        this.isAddOperation = false
+        this.getUserAccounts()
+      },
+      error: (err: any) => {
+        console.error(err);
+        this.message = err?.error?.error
+        this.toastService.show(this.messageTemplate, { classname: 'bg-danger text-light', delay: 5000 })
+      }
+    }).add(() => {
+
+    })
+  }
+
+  updateUserAccount(): void {
+    this.toastService.show(this.addOperationTemplate, { classname: 'bg-info text-light', delay: 5000 })
+
+    this.accountService.updateUserAccount(this.accountForm.value).subscribe({
+      next: (response: any) => {
+        console.log(response);
+        this.message = "Account successfully updated"
+        this.toastService.show(this.messageTemplate, { classname: 'bg-success text-light', delay: 5000 })
+        this.getUserAccounts()
+      },
+      error: (err: any) => {
+        console.error(err);
+        this.message = err?.error?.error
+        this.toastService.show(this.messageTemplate, { classname: 'bg-danger text-light', delay: 5000 })
+      }
+    }).add(() => {
+
+    })
+  }
+
 }

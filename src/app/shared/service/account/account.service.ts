@@ -17,8 +17,8 @@ export class AccountService {
     private localService: LocalService,
   ) { }
 
-  getUserAccounts(params?: HttpParams): Observable<HttpResponse<IUserAccount[]>> {
-    return this.httpClient.get<IUserAccount[]>(`${this.baseURL}/user/accounts`, {
+  getAccounts(params?: HttpParams): Observable<HttpResponse<IUserAccount[]>> {
+    return this.httpClient.get<IUserAccount[]>(`${this.baseURL}/user-accounts`, {
       headers: new HttpHeaders({ "Authorization": "Bearer " + this.localService.getJsonValue("token") }),
       observe: "response", params: params
     })
@@ -27,7 +27,7 @@ export class AccountService {
   addUserAccount(account: IUserAccount): Observable<any> {
     let userId: string = this.localService.getJsonValue("userId")
 
-    return this.httpClient.post<any>(`${this.baseURL}/user/${userId}/account`, account, {
+    return this.httpClient.post<any>(`${this.baseURL}/user/${userId}/accounts`, account, {
       headers: new HttpHeaders({ "Authorization": "Bearer " + this.localService.getJsonValue("token") })
     })
   }
@@ -35,7 +35,7 @@ export class AccountService {
   updateUserAccount(account: IUserAccount): Observable<any> {
     let userId: string = this.localService.getJsonValue("userId")
 
-    return this.httpClient.put<any>(`${this.baseURL}/user/${userId}/account/${account.id}`, account, {
+    return this.httpClient.put<any>(`${this.baseURL}/user/${userId}/accounts/${account.id}`, account, {
       headers: new HttpHeaders({ "Authorization": "Bearer " + this.localService.getJsonValue("token") })
     })
   }
@@ -43,7 +43,7 @@ export class AccountService {
   deleteUserAccount(accountId: string): Observable<any> {
     let userId: string = this.localService.getJsonValue("userId")
 
-    return this.httpClient.delete<any>(`${this.baseURL}/user/${userId}/account/${accountId}`, {
+    return this.httpClient.delete<any>(`${this.baseURL}/user/${userId}/accounts/${accountId}`, {
       headers: new HttpHeaders({ "Authorization": "Bearer " + this.localService.getJsonValue("token") })
     })
   }
