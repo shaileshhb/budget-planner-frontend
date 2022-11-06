@@ -1,9 +1,13 @@
 <div class="container pt-5">
-  <div class="d-flex justify-content-end mb-3">
-    <button *ngIf="!isGetCompleted" class="btn btn-dark disabled placeholder w-10"></button>
-    <button *ngIf="isGetCompleted" type="button" class="btn btn-dark" (click)="onAddClick()">
-      Add Envelop
-    </button>
+  <div class="d-flex justify-content-between mb-3">
+    <h3>Total envelops - {{envelops?.length || 0}}</h3>
+    <h3>Monthly budget - {{totalMonthlyBudget | currency:'INR'}}</h3>
+    <div class="d-flex">
+      <button *ngIf="!isGetCompleted" class="btn btn-dark disabled placeholder w-10"></button>
+      <button *ngIf="isGetCompleted" type="button" class="btn btn-dark" (click)="onAddClick()">
+        Add Envelop
+      </button>
+    </div>
   </div>
 
   <!-- template loader -->

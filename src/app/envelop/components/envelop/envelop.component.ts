@@ -20,6 +20,7 @@ export class EnvelopComponent implements OnInit {
   ) { }
 
   envelops: IEnvelop[] | null = []
+  totalMonthlyBudget: number = 0
 
   ngOnInit(): void {
     this.getEnvelops()
@@ -50,12 +51,14 @@ export class EnvelopComponent implements OnInit {
   calculateTotalSpending(): void {
     for (let index = 0; index < this.envelops!.length; index++) {
       const envelop = this.envelops![index]
+      this.totalMonthlyBudget += parseInt(this.envelops![index].amount.toString())
       envelop.showSpending = false
       envelop.totalSpending = 0
       for (let j = 0; j < envelop.spendings!.length; j++) {
         envelop.totalSpending += parseInt(envelop.spendings![j].amount!)
       }
-      envelop.type = ((envelop.totalSpending / envelop.amount) * 100 <= 50) ? 'success' : (((envelop.totalSpending / envelop.amount) * 100 <= 75) ? 'warning' : 'danger')
+      envelop.type = ((envelop.totalSpending / parseInt(envelop.amount.toString())) * 100 <= 50) ? 'success' : 
+        (((envelop.totalSpending / parseInt(envelop.amount.toString())) * 100 <= 75) ? 'warning' : 'danger')
     }
   }
 

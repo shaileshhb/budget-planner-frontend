@@ -71,13 +71,18 @@ export class UserAccountComponent implements OnInit {
   }
 
   calculateTotalAmount(): void {
-    this.userAccounts.filter((value: IUserAccount) => this.totalAmount += value.amount)
+    this.userAccounts.filter((value: IUserAccount) => {
+      this.totalAmount += parseInt(value.amount)
+      value.isEditClicked = false
+    })
   }
 
   isAddOperation: boolean = false
+  isEditOperation: boolean = false
 
   onAddClick(): void {
     this.isAddOperation = true
+    this.isEditOperation = false
     this.createAccountForm()
   }
 
@@ -88,11 +93,20 @@ export class UserAccountComponent implements OnInit {
 
   onEditClick(userAccount: IUserAccount): void {
     this.isAddOperation = false
+    this.isEditOperation = true
+    userAccount.isEditClicked = true
     this.createAccountForm()
     this.accountForm.patchValue(userAccount)
   }
 
-  onDeleteClick(userAccount: IUserAccount): void {
+  cancelEdit(userAccount: IUserAccount): void {
+    userAccount.isEditClicked = false
+    this.isEditOperation = false
+    this.accountForm.reset()
+  }
+
+  onDeleteClick(event: Event, userAccount: IUserAccount): void {
+    event.stopPropagation()
     console.log(userAccount);
   }
 
@@ -115,20 +129,22 @@ export class UserAccountComponent implements OnInit {
   @ViewChild('addOperationTemplate') addOperationTemplate!: TemplateRef<any>
 
   addUserAccount(): void {
-    this.toastService.show(this.addOperationTemplate, { classname: 'bg-info text-light', delay: 5000 })
+    this.toastService.show(this.addOperationTemplate, { classname: 'bg-info text-light', delay: 1000 })
 
     this.accountService.addUserAccount(this.accountForm.value).subscribe({
       next: (response: any) => {
         console.log(response);
         this.message = "Account successfully added"
-        this.toastService.show(this.messageTemplate, { classname: 'bg-success text-light', delay: 5000 })
+        this.toastService.clear()
         this.accountForm.reset()
         this.isAddOperation = false
+        this.toastService.show(this.messageTemplate, { classname: 'bg-success text-light', delay: 5000 })
         this.getUserAccounts()
       },
       error: (err: any) => {
         console.error(err);
         this.message = err?.error?.error
+        this.toastService.clear()
         this.toastService.show(this.messageTemplate, { classname: 'bg-danger text-light', delay: 5000 })
       }
     }).add(() => {
@@ -137,14 +153,16 @@ export class UserAccountComponent implements OnInit {
   }
 
   updateUserAccount(): void {
-    this.toastService.show(this.addOperationTemplate, { classname: 'bg-info text-light', delay: 5000 })
+    this.toastService.show(this.addOperationTemplate, { classname: 'bg-info text-light', delay: 1000 })
 
     this.accountService.updateUserAccount(this.accountForm.value).subscribe({
       next: (response: any) => {
         console.log(response);
         this.message = "Account successfully updated"
-        this.toastService.show(this.messageTemplate, { classname: 'bg-success text-light', delay: 5000 })
+        this.isEditOperation = false
+        this.toastService.clear()
         this.getUserAccounts()
+        this.toastService.show(this.messageTemplate, { classname: 'bg-success text-light', delay: 5000 })
       },
       error: (err: any) => {
         console.error(err);
