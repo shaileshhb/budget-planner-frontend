@@ -126,10 +126,9 @@ export class UserAccountComponent implements OnInit {
     this.updateUserAccount()
   }
 
-  @ViewChild('addOperationTemplate') addOperationTemplate!: TemplateRef<any>
-
   addUserAccount(): void {
-    this.toastService.show(this.addOperationTemplate, { classname: 'bg-info text-light', delay: 1000 })
+    this.message = "Adding account"
+    this.toastService.show(this.messageTemplate, { classname: 'bg-info text-light', delay: 1000 })
 
     this.accountService.addUserAccount(this.accountForm.value).subscribe({
       next: (response: any) => {
@@ -153,7 +152,8 @@ export class UserAccountComponent implements OnInit {
   }
 
   updateUserAccount(): void {
-    this.toastService.show(this.addOperationTemplate, { classname: 'bg-info text-light', delay: 1000 })
+    this.message = "Updating account"
+    this.toastService.show(this.messageTemplate, { classname: 'bg-info text-light', delay: 1000 })
 
     this.accountService.updateUserAccount(this.accountForm.value).subscribe({
       next: (response: any) => {
@@ -173,5 +173,26 @@ export class UserAccountComponent implements OnInit {
 
     })
   }
+
+  deleteUserAccount(accountId: string): void {
+    this.message = "Deleting account"
+    this.toastService.show(this.messageTemplate, { classname: 'bg-info text-light', delay: 1000 })
+
+    this.accountService.deleteUserAccount(accountId).subscribe({
+      next: (response: any) => {
+        console.log(response);
+        this.message = "Account successfully deleted"
+        this.toastService.clear()
+        this.getUserAccounts()
+        this.toastService.show(this.messageTemplate, { classname: 'bg-success text-light', delay: 5000 })
+      },
+      error: (err: any) => {
+        console.error(err);
+        this.message = err?.error?.error
+        this.toastService.show(this.messageTemplate, { classname: 'bg-danger text-light', delay: 5000 })
+      }
+    })
+  }
+
 
 }

@@ -2,10 +2,14 @@
   <div class="d-flex justify-content-between mb-3">
     <h3>Total envelops - {{envelops?.length || 0}}</h3>
     <h3>Monthly budget - {{totalMonthlyBudget | currency:'INR'}}</h3>
-    <div class="d-flex">
+    <div class="d-flex justify-content-start">
       <button *ngIf="!isGetCompleted" class="btn btn-dark disabled placeholder w-10"></button>
       <button *ngIf="isGetCompleted" type="button" class="btn btn-dark" (click)="onAddClick()">
         Add Envelop
+      </button>
+      <button *ngIf="!isGetCompleted" class="btn btn-dark disabled placeholder w-10"></button>
+      <button *ngIf="isGetCompleted" type="button" class="btn btn-dark" (click)="onAddSalaryClick()">
+        Add Salary
       </button>
     </div>
   </div>

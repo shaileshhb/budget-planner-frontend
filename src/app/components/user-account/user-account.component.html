@@ -81,11 +81,22 @@
 </div>
 
 
-
 <ng-template #messageTemplate>
   <span class="toast-font"><strong>{{message}}</strong></span>
 </ng-template>
 
-<ng-template #addOperationTemplate>
-  <span class="toast-font"><strong>Adding account...</strong></span>
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Delete Confirmation</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+
+  <div class="modal-body">
+    <h4>Are you sure you want to continue?</h4>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-success">Yes</button>
+    <button type="button" class="btn btn-outline-danger">No</button>
+  </div>
 </ng-template>

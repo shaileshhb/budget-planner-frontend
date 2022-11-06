@@ -1,10 +1,12 @@
 import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { IEnvelop } from 'src/app/models/IEnvelop';
+import { IUserSalary } from 'src/app/models/IUserSalary';
 import { LocalService } from 'src/app/shared/service/local/local.service';
 import { EnvelopService } from '../../service/envelop/envelop.service';
+import { SalaryService } from '../../service/salary/salary.service';
 
 @Component({
   selector: 'app-envelop',
@@ -17,12 +19,14 @@ export class EnvelopComponent implements OnInit {
     private envelopService: EnvelopService,
     private localService: LocalService,
     private modalService: NgbModal,
+    private salaryService: SalaryService
   ) { }
 
   envelops: IEnvelop[] | null = []
   totalMonthlyBudget: number = 0
 
   ngOnInit(): void {
+    this.getUserSalaries()
     this.getEnvelops()
   }
 
@@ -75,7 +79,8 @@ export class EnvelopComponent implements OnInit {
       id: new FormControl<string | null>(null),
       name: new FormControl<string | null>(null, [Validators.required]),
       amount: new FormControl<number>(0, [Validators.required, Validators.min(1)]),
-      userId: new FormControl<string>(this.localService.getJsonValue("userId"))
+      userId: new FormControl<string>(this.localService.getJsonValue("userId")),
+      salaryId: new FormControl<string | null>(null, [Validators.required]),
     })
   }
 
@@ -162,5 +167,33 @@ export class EnvelopComponent implements OnInit {
     }
 
     this.modalRef = this.modalService.open(modalContent, modalOptions)
+  }
+
+  userSalaries: IUserSalary[] | null = []
+
+  getUserSalaries(): void {
+    this.userSalaries = []
+    this.salaryService.getUserSalaries().subscribe({
+      next: (response: HttpResponse<IUserSalary[]>) => {
+        this.userSalaries = response.body
+      },
+      error: (err: any) => {
+        console.error(err);
+      }
+    })
+  }
+
+  userSalaryForm!: FormGroup
+
+  createSalaryForm(): void {
+    this.userSalaryForm = new FormGroup({
+      id: new FormControl<string | null>(null),
+      accountId: new FormControl<string | null>(null, [Validators.required]),
+      salary: new FormControl<number>(0, [Validators.required]),
+      salaryType: new FormControl<string | null>(null, [Validators.required])
+    })
+  }
+
+  onAddSalaryClick(): void {
   }
 }
