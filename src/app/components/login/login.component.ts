@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HttpResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CredentialService, ICredential } from 'src/app/service/credential/credential.service';
 import { LocalService } from 'src/app/shared/service/local/local.service';
+import { ToastService } from 'src/app/shared/service/toast/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -22,10 +23,14 @@ import { LocalService } from 'src/app/shared/service/local/local.service';
 })
 export class LoginComponent implements OnInit {
 
+  message: string = ""
+  @ViewChild("messageTemplate") messageTemplate!: TemplateRef<any>;
+
   constructor(
     private credService: CredentialService,
     private localService: LocalService,
     private router: Router,
+    private toastService: ToastService,
   ) { }
 
   ngOnInit(): void {
@@ -62,7 +67,9 @@ export class LoginComponent implements OnInit {
       },
       error: (err: any) => {
         console.error(err);
-        alert(err)
+        // alert(err?.error?.error)
+        this.message = err?.error?.error
+        this.toastService.show(this.messageTemplate, { classname: 'bg-danger text-light', delay: 5000 })
       }
     })
   }

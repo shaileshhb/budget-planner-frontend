@@ -3,8 +3,11 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { IEnvelop } from 'src/app/models/IEnvelop';
+import { IUserAccount } from 'src/app/models/IUserAccount';
 import { IUserSalary } from 'src/app/models/IUserSalary';
 import { LocalService } from 'src/app/shared/service/local/local.service';
+import { ToastService } from 'src/app/shared/service/toast/toast.service';
+import { AccountService } from '../../service/account/account.service';
 import { EnvelopService } from '../../service/envelop/envelop.service';
 import { SalaryService } from '../../service/salary/salary.service';
 
@@ -15,11 +18,16 @@ import { SalaryService } from '../../service/salary/salary.service';
 })
 export class EnvelopComponent implements OnInit {
 
+  message: string = ""
+  @ViewChild("messageTemplate") messageTemplate!: TemplateRef<any>;
+
   constructor(
     private envelopService: EnvelopService,
     private localService: LocalService,
     private modalService: NgbModal,
-    private salaryService: SalaryService
+    private salaryService: SalaryService,
+    private accountService: AccountService,
+    private toastService: ToastService,
   ) { }
 
   envelops: IEnvelop[] | null = []
@@ -183,6 +191,7 @@ export class EnvelopComponent implements OnInit {
     })
   }
 
+  @ViewChild('salaryModal') salaryModal!: TemplateRef<any>
   userSalaryForm!: FormGroup
 
   createSalaryForm(): void {
@@ -195,5 +204,34 @@ export class EnvelopComponent implements OnInit {
   }
 
   onAddSalaryClick(): void {
+    this.isAddOperation = true
+    this.isUpdateOperation = false
+
+    if (this.accounts?.length == 0) {
+      this.getUserAccounts()
+    }
+
+    this.createSalaryForm()
+    this.openModal(this.salaryModal)
+  }
+
+  accounts: IUserAccount[] | null = []
+
+  getUserAccounts(): void {
+    let queryparams: any = {
+      userId: this.localService.getJsonValue("userId")
+    }
+    this.accountService.getUserAccounts(queryparams).subscribe({
+      next: (response: HttpResponse<IUserAccount[]>) => {
+        console.log(response);
+        this.accounts = response.body
+        this.modalRef.close()
+      },
+      error: (err: any) => {
+        console.error(err);
+        this.message = err?.error?.error
+        this.toastService.show(this.messageTemplate, { classname: 'bg-danger text-light', delay: 5000 })
+      }
+    })
   }
 }

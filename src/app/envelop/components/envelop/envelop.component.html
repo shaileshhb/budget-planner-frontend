@@ -8,7 +8,7 @@
         Add Envelop
       </button>
       <button *ngIf="!isGetCompleted" class="btn btn-dark disabled placeholder w-10"></button>
-      <button *ngIf="isGetCompleted" type="button" class="btn btn-dark" (click)="onAddSalaryClick()">
+      <button *ngIf="isGetCompleted" type="button" class="btn btn-dark ms-3" (click)="onAddSalaryClick()">
         Add Salary
       </button>
     </div>
@@ -152,4 +152,51 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-dark" (click)="onSaveClick()">Save</button>
   </div>
+</ng-template>
+
+
+<ng-template #salaryModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{isAddOperation ? 'Add Salary' : (isUpdateOperation ? 'Update Salary' : 'Salary')}}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+
+  <div class="modal-body">
+    <div class="row">
+      <form [formGroup]="userSalaryForm">
+        <div class="form-floating mb-3">
+          <input formControlName="salary" type="number" class="form-control" id="salaryFloatingInput"
+            placeholder="Eg.: Shopping" [ngClass]="((userSalaryForm.get('salary')?.dirty || userSalaryForm.get('salary')?.touched) && 
+              (userSalaryForm.get('salary')?.invalid)) ? 'is-invalid' : ''">
+          <label for="salaryFloatingInput">Salary</label>
+          <div class="invalid-feedback">
+            Salary must be specified
+          </div>
+        </div>
+        <div class="form-floating mb-3">
+          <select formControlName="salaryType" class="form-select" id="floatingSelectSalaryType" aria-label="Select salary">
+            <option value="null">Select salary type</option>
+            <option value="Job">Job</option>
+            <option value="Freelancing">Freelancing</option>
+          </select>
+          <label for="floatingSelectSalaryType">Salary Type</label>
+        </div>
+        <div class="form-floating mb-3">
+          <select formControlName="accountId" class="form-select" id="floatingSelectAccountId" aria-label="Select account">
+            <option value="null">Select account</option>
+            <option *ngFor="let account of accounts" [ngValue]="account.id">{{account.name}}</option>
+          </select>
+          <label for="floatingSelectAccountId">Account</label>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="onSaveClick()">Save</button>
+  </div>
+</ng-template>
+
+<ng-template #messageTemplate>
+  <span class="toast-font"><strong>{{message}}</strong></span>
 </ng-template>

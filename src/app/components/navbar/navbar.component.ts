@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { LocalService } from 'src/app/shared/service/local/local.service';
 
 @Component({
   selector: 'app-navbar',
@@ -7,10 +9,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private localService: LocalService,
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
 
   }
 
+  logout(): void {
+    this.localService.clearLocalStorage()
+    this.router.navigate(["login"])
+  }
 }

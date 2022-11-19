@@ -1,14 +1,14 @@
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IUserSalary } from 'src/app/models/IUserSalary';
+import { IUserAccount } from 'src/app/models/IUserAccount';
 import { LocalService } from 'src/app/shared/service/local/local.service';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SalaryService {
+export class AccountService {
 
   private baseURL: string = environment.BASEURL
 
@@ -16,34 +16,34 @@ export class SalaryService {
     private httpClient: HttpClient,
     private localService: LocalService,
   ) { }
-
-  getUserSalaries(params?: HttpParams): Observable<HttpResponse<IUserSalary[]>> {
-    return this.httpClient.get<IUserSalary[]>(`${this.baseURL}/user-salary`, {
+  
+  getUserAccounts(params?: HttpParams): Observable<HttpResponse<IUserAccount[]>> {
+    return this.httpClient.get<IUserAccount[]>(`${this.baseURL}/user-accounts`, {
       headers: new HttpHeaders({ "Authorization": "Bearer " + this.localService.getJsonValue("token") }),
       observe: "response", params: params
     })
   }
 
-  addUserSalary(salary: IUserSalary): Observable<any> {
+  addUserAccount(userAccount: IUserAccount): Observable<any> {
     let userId: string = this.localService.getJsonValue("userId")
 
-    return this.httpClient.post<string>(`${this.baseURL}/user/${userId}/salary`, salary, {
+    return this.httpClient.post<string>(`${this.baseURL}/user/${userId}/accounts`, userAccount, {
       headers: new HttpHeaders({ "Authorization": "Bearer " + this.localService.getJsonValue("token") })
     })
   }
 
-  updateUserSalary(salary: IUserSalary): Observable<string> {
+  updateUserAccount(userAccount: IUserAccount): Observable<string> {
     let userId: string = this.localService.getJsonValue("userId")
     
-    return this.httpClient.put<string>(`${this.baseURL}/user/${userId}/salary/${salary.id}`, salary, {
+    return this.httpClient.put<string>(`${this.baseURL}/user/${userId}/accounts/${userAccount.id}`, userAccount, {
       headers: new HttpHeaders({ "Authorization": "Bearer " + this.localService.getJsonValue("token") })
     })
   }
   
-  deleteUserSalary(salaryId: string): Observable<string> {
+  deleteUserAccount(accountId: string): Observable<string> {
     let userId: string = this.localService.getJsonValue("userId")
 
-    return this.httpClient.delete<string>(`${this.baseURL}/user/${userId}/salary/${salaryId}`, {
+    return this.httpClient.delete<string>(`${this.baseURL}/user/${userId}/accounts/${accountId}`, {
       headers: new HttpHeaders({ "Authorization": "Bearer " + this.localService.getJsonValue("token") })
     })
   }
