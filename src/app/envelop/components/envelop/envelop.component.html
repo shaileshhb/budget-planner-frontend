@@ -7,10 +7,6 @@
       <button *ngIf="isGetCompleted" type="button" class="btn btn-dark" (click)="onAddClick()">
         Add Envelop
       </button>
-      <button *ngIf="!isGetCompleted" class="btn btn-dark disabled placeholder w-10"></button>
-      <button *ngIf="isGetCompleted" type="button" class="btn btn-dark ms-3" (click)="onAddSalaryClick()">
-        Add Salary
-      </button>
     </div>
   </div>
 
@@ -132,8 +128,16 @@
             placeholder="Eg.: Shopping" [ngClass]="((envelopForm.get('name')?.dirty || envelopForm.get('name')?.touched) && 
               (envelopForm.get('name')?.invalid)) ? 'is-invalid' : ''">
           <label for="nameFloatingInput">Name</label>
-          <div class="invalid-control">
-            Name must be specified
+          <div *ngIf="envelopForm.get('name')!.touched && envelopForm.get('name')!.invalid">
+            <div *ngIf="envelopForm.get('name')!.errors!['required']" class="invalid-control">
+              Name must be specified
+            </div>
+            <div *ngIf="envelopForm.get('name')!.errors!['minlenght']" class="invalid-control">
+              Invalid name specified
+            </div>
+            <div *ngIf="envelopForm.get('name')!.errors!['maxlenght']" class="invalid-control">
+              Name cannot consist of more than 255 characters
+            </div>
           </div>
         </div>
         <div class="form-floating mb-3">
@@ -141,8 +145,13 @@
             placeholder="Eg.: 1000" [ngClass]="((envelopForm.get('amount')?.dirty || envelopForm.get('amount')?.touched) && 
               (envelopForm.get('amount')?.invalid)) ? 'is-invalid' : ''">
           <label for="amountFloatingInput">Budget Amount</label>
-          <div class="invalid-control">
-            Amount must be specified
+          <div *ngIf="envelopForm.get('amount')!.touched && envelopForm.get('amount')!.invalid">
+            <div *ngIf="envelopForm.get('amount')!.errors!['required']" class="invalid-control">
+              Amount must be specified
+            </div>
+            <div *ngIf="envelopForm.get('amount')!.errors!['min']" class="invalid-control">
+              Invalid amount specified
+            </div>
           </div>
         </div>
       </form>
@@ -154,48 +163,6 @@
   </div>
 </ng-template>
 
-
-<ng-template #salaryModal let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title">{{isAddOperation ? 'Add Salary' : (isUpdateOperation ? 'Update Salary' : 'Salary')}}</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
-  </div>
-
-  <div class="modal-body">
-    <div class="row">
-      <form [formGroup]="userSalaryForm">
-        <div class="form-floating mb-3">
-          <input formControlName="salary" type="number" class="form-control" id="salaryFloatingInput"
-            placeholder="Eg.: Shopping" [ngClass]="((userSalaryForm.get('salary')?.dirty || userSalaryForm.get('salary')?.touched) && 
-              (userSalaryForm.get('salary')?.invalid)) ? 'is-invalid' : ''">
-          <label for="salaryFloatingInput">Salary</label>
-          <div class="invalid-control">
-            Salary must be specified
-          </div>
-        </div>
-        <div class="form-floating mb-3">
-          <select formControlName="salaryType" class="form-select" id="floatingSelectSalaryType" aria-label="Select salary">
-            <option value="null">Select salary type</option>
-            <option value="Job">Job</option>
-            <option value="Freelancing">Freelancing</option>
-          </select>
-          <label for="floatingSelectSalaryType">Salary Type</label>
-        </div>
-        <div class="form-floating mb-3">
-          <select formControlName="accountId" class="form-select" id="floatingSelectAccountId" aria-label="Select account">
-            <option value="null">Select account</option>
-            <option *ngFor="let account of accounts" [ngValue]="account.id">{{account.name}}</option>
-          </select>
-          <label for="floatingSelectAccountId">Account</label>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="onSaveClick()">Save</button>
-  </div>
-</ng-template>
 
 <ng-template #messageTemplate>
   <span class="toast-font"><strong>{{message}}</strong></span>

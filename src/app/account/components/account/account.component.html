@@ -1,9 +1,16 @@
 <div class="container pt-5">
   <div class="d-flex justify-content-between mb-3">
     <h3>Total amount - {{totalAmount | currency: 'INR'}}</h3>
-    <button type="button" class="btn btn-dark" (click)="onAddClick()" [disabled]="isAddOperation || isEditOperation">
-      Add Account
-    </button>
+    <div class="d-flex justify-content-start">
+      <button *ngIf="!isGetCompleted" class="btn btn-dark disabled placeholder w-10"></button>
+      <button type="button" class="btn btn-dark" (click)="onAddClick()" [disabled]="isAddOperation || isEditOperation">
+        Add Account
+      </button>
+      <button *ngIf="!isGetCompleted" class="btn btn-dark disabled placeholder w-10"></button>
+      <button *ngIf="isGetCompleted" type="button" class="btn btn-dark ms-3" (click)="onAddSalaryClick()">
+        Add Salary
+      </button>
+    </div>
   </div>
 
   <ng-container *ngIf="userAccounts.length > 0 || isAddOperation">
@@ -40,10 +47,26 @@
                     </button>
                   </td>
                   <td>
-                    <input type="text" class="form-control" formControlName="name" placeholder="Eg: My Account">
+                    <input type="text" class="form-control" formControlName="name" placeholder="Eg: My Account"
+                      [ngClass]="(accountForm.get('name')!.touched || accountForm.get('name')!.dirty) && 
+                    accountForm.get('name')!.invalid ? 'is-invalid' : ''" maxlength="255">
+                    <div *ngIf="(accountForm.get('name')!.touched || accountForm.get('name')!.dirty) && 
+                      accountForm.get('name')!.invalid">
+                      <div *ngIf="accountForm.get('name')!.errors!['required']" class="invalid-control">
+                        Account name must be specified
+                      </div>
+                    </div>
                   </td>
                   <td>
-                    <input type="number" class="form-control" formControlName="amount" placeholder="Eg: 10000">
+                    <input type="number" class="form-control" formControlName="amount" placeholder="Eg: 10000"
+                      [ngClass]="(accountForm.get('amount')!.touched || accountForm.get('amount')!.dirty) && 
+                    accountForm.get('amount')!.invalid ? 'is-invalid' : ''">
+                    <div *ngIf="(accountForm.get('amount')!.touched || accountForm.get('amount')!.dirty) && 
+                      accountForm.get('amount')!.invalid">
+                      <div *ngIf="accountForm.get('amount')!.errors!['required']" class="invalid-control">
+                        Amount must be specified
+                      </div>
+                    </div>
                   </td>
                   <td class="text-center">
                     <button type="reset" class="btn" (click)="cancelEdit(userAccount)">
@@ -61,10 +84,27 @@
                   </button>
                 </td>
                 <td>
-                  <input type="text" class="form-control" formControlName="name" placeholder="Eg: My Account">
+                  <input type="text" class="form-control" formControlName="name" placeholder="Eg: My Account" [ngClass]="(accountForm.get('name')!.touched || accountForm.get('name')!.dirty) && 
+                    accountForm.get('name')!.invalid ? 'is-invalid' : ''" maxlength="255">
+                  <div *ngIf="(accountForm.get('name')!.touched || accountForm.get('name')!.dirty) && 
+                      accountForm.get('name')!.invalid">
+                    <div *ngIf="accountForm.get('name')!.errors!['required']" class="invalid-control">
+                      Account name must be specified
+                    </div>
+                  </div>
                 </td>
                 <td>
-                  <input type="number" class="form-control" formControlName="amount" placeholder="Eg: 10000">
+                  <input type="number" class="form-control" formControlName="amount" placeholder="Eg: 10000" [ngClass]="(accountForm.get('amount')!.touched || accountForm.get('amount')!.dirty) && 
+                    accountForm.get('amount')!.invalid ? 'is-invalid' : ''" maxlength="255">
+                  <div *ngIf="(accountForm.get('amount')!.touched || accountForm.get('amount')!.dirty) && 
+                      accountForm.get('amount')!.invalid">
+                    <div *ngIf="accountForm.get('amount')!.errors!['required']" class="invalid-control">
+                      Amount must be specified
+                    </div>
+                    <div *ngIf="accountForm.get('amount')!.errors!['min']" class="invalid-control">
+                      Invalid amount entered
+                    </div>
+                  </div>
                 </td>
                 <td class="text-center">
                   <button type="reset" class="btn" (click)="cancelAdd()">
@@ -84,6 +124,69 @@
 <ng-template #messageTemplate>
   <span class="toast-font"><strong>{{message}}</strong></span>
 </ng-template>
+
+
+<ng-template #salaryModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Add Salary</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+
+  <div class="modal-body">
+    <div class="row">
+      <form [formGroup]="userSalaryForm">
+        <div class="form-floating mb-3">
+          <input formControlName="salary" type="number" class="form-control" id="salaryFloatingInput"
+            placeholder="Eg.: Shopping" [ngClass]="((userSalaryForm.get('salary')?.dirty || userSalaryForm.get('salary')?.touched) && 
+              (userSalaryForm.get('salary')?.invalid)) ? 'is-invalid' : ''">
+          <label for="salaryFloatingInput">Salary</label>
+          <div *ngIf="userSalaryForm.get('salary')!.touched && userSalaryForm.get('salary')!.invalid">
+            <div *ngIf="userSalaryForm.get('salary')!.errors!['required']" class="invalid-control">
+              Salary must be specified
+            </div>
+            <div *ngIf="userSalaryForm.get('salary')!.errors!['min']" class="invalid-control">
+              Invalid salary specified
+            </div>
+          </div>
+        </div>
+        <div class="form-floating mb-3">
+          <select formControlName="salaryType" class="form-select" id="floatingSelectSalaryType"
+            aria-label="Select salary" [ngClass]="((userSalaryForm.get('salaryType')?.dirty || userSalaryForm.get('salaryType')?.touched) && 
+            (userSalaryForm.get('salaryType')?.invalid)) ? 'is-invalid' : ''">
+            <option [ngValue]="null">Select salary type</option>
+            <option value="Job">Job</option>
+            <option value="Freelancing">Freelancing</option>
+          </select>
+          <label for="floatingSelectSalaryType">Salary Type</label>
+          <div *ngIf="userSalaryForm.get('salaryType')!.touched && userSalaryForm.get('salaryType')!.invalid">
+            <div *ngIf="userSalaryForm.get('salaryType')!.errors!['required']" class="invalid-control">
+              Salary type must be specified
+            </div>
+          </div>
+        </div>
+        <div class="form-floating mb-3">
+          <select formControlName="accountId" class="form-select" id="floatingSelectAccountId"
+            aria-label="Select account" [ngClass]="((userSalaryForm.get('accountId')?.dirty || userSalaryForm.get('accountId')?.touched) && 
+            (userSalaryForm.get('accountId')?.invalid)) ? 'is-invalid' : ''">
+            <option [ngValue]="null">Select account</option>
+            <option *ngFor="let account of userAccounts" [ngValue]="account.id">{{account.name}}</option>
+          </select>
+          <label for="floatingSelectAccountId">Account</label>
+          <div *ngIf="userSalaryForm.get('accountId')!.touched && userSalaryForm.get('accountId')!.invalid">
+            <div *ngIf="userSalaryForm.get('accountId')!.errors!['required']" class="invalid-control">
+              Account must be specified
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="onSaveSalaryClick()">Save</button>
+  </div>
+</ng-template>
+
 
 <ng-template #deleteModal let-modal>
   <div class="modal-header">

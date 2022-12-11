@@ -1,9 +1,9 @@
-import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IUserAccount } from 'src/app/models/IUserAccount';
+import { LocalService } from 'src/app/shared/service/local/local.service';
 import { environment } from 'src/environments/environment';
-import { LocalService } from '../local/local.service';
 
 @Injectable({
   providedIn: 'root'
@@ -47,4 +47,5 @@ export class AccountService {
       headers: new HttpHeaders({ "Authorization": "Bearer " + this.localService.getJsonValue("token") })
     })
   }
+  
 }

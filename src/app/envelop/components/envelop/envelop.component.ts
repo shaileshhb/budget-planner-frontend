@@ -25,8 +25,6 @@ export class EnvelopComponent implements OnInit {
     private envelopService: EnvelopService,
     private localService: LocalService,
     private modalService: NgbModal,
-    private salaryService: SalaryService,
-    private accountService: AccountService,
     private toastService: ToastService,
   ) { }
 
@@ -34,7 +32,6 @@ export class EnvelopComponent implements OnInit {
   totalMonthlyBudget: number = 0
 
   ngOnInit(): void {
-    this.getUserSalaries()
     this.getEnvelops()
   }
 
@@ -85,7 +82,7 @@ export class EnvelopComponent implements OnInit {
   createEnvelopForm(): void {
     this.envelopForm = new FormGroup({
       id: new FormControl<string | null>(null),
-      name: new FormControl<string | null>(null, [Validators.required]),
+      name: new FormControl<string | null>(null, [Validators.required, Validators.minLength(2), Validators.maxLength(255)]),
       amount: new FormControl<number>(0, [Validators.required, Validators.min(1)]),
       userId: new FormControl<string>(this.localService.getJsonValue("userId")),
       salaryId: new FormControl<string | null>(null, [Validators.required]),
@@ -161,7 +158,6 @@ export class EnvelopComponent implements OnInit {
     })
   }
 
-
   modalRef!: NgbModalRef
 
   openModal(modalContent: TemplateRef<any>, modalSize: string = "lg", modalOptions?: NgbModalOptions): void {
@@ -177,61 +173,4 @@ export class EnvelopComponent implements OnInit {
     this.modalRef = this.modalService.open(modalContent, modalOptions)
   }
 
-  userSalaries: IUserSalary[] | null = []
-
-  getUserSalaries(): void {
-    this.userSalaries = []
-    this.salaryService.getUserSalaries().subscribe({
-      next: (response: HttpResponse<IUserSalary[]>) => {
-        this.userSalaries = response.body
-      },
-      error: (err: any) => {
-        console.error(err);
-      }
-    })
-  }
-
-  @ViewChild('salaryModal') salaryModal!: TemplateRef<any>
-  userSalaryForm!: FormGroup
-
-  createSalaryForm(): void {
-    this.userSalaryForm = new FormGroup({
-      id: new FormControl<string | null>(null),
-      accountId: new FormControl<string | null>(null, [Validators.required]),
-      salary: new FormControl<number>(0, [Validators.required]),
-      salaryType: new FormControl<string | null>(null, [Validators.required])
-    })
-  }
-
-  onAddSalaryClick(): void {
-    this.isAddOperation = true
-    this.isUpdateOperation = false
-
-    if (this.accounts?.length == 0) {
-      this.getUserAccounts()
-    }
-
-    this.createSalaryForm()
-    this.openModal(this.salaryModal)
-  }
-
-  accounts: IUserAccount[] | null = []
-
-  getUserAccounts(): void {
-    let queryparams: any = {
-      userId: this.localService.getJsonValue("userId")
-    }
-    this.accountService.getUserAccounts(queryparams).subscribe({
-      next: (response: HttpResponse<IUserAccount[]>) => {
-        console.log(response);
-        this.accounts = response.body
-        this.modalRef.close()
-      },
-      error: (err: any) => {
-        console.error(err);
-        this.message = err?.error?.error
-        this.toastService.show(this.messageTemplate, { classname: 'bg-danger text-light', delay: 5000 })
-      }
-    })
-  }
 }
