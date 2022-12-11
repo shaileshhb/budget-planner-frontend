@@ -63,7 +63,7 @@ export class LoginComponent implements OnInit {
         this.localService.setJsonValue("name", this.credential?.name)
         this.localService.setJsonValue("token", this.credential?.token)
         this.localService.setJsonValue("isVerified", this.credential?.isVerified)
-        this.router.navigate(["envelop", "dashboard"])
+        this.router.navigate(["account"])
       },
       error: (err: any) => {
         console.error(err);

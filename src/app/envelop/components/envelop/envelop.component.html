@@ -132,7 +132,7 @@
             placeholder="Eg.: Shopping" [ngClass]="((envelopForm.get('name')?.dirty || envelopForm.get('name')?.touched) && 
               (envelopForm.get('name')?.invalid)) ? 'is-invalid' : ''">
           <label for="nameFloatingInput">Name</label>
-          <div class="invalid-feedback">
+          <div class="invalid-control">
             Name must be specified
           </div>
         </div>
@@ -141,7 +141,7 @@
             placeholder="Eg.: 1000" [ngClass]="((envelopForm.get('amount')?.dirty || envelopForm.get('amount')?.touched) && 
               (envelopForm.get('amount')?.invalid)) ? 'is-invalid' : ''">
           <label for="amountFloatingInput">Budget Amount</label>
-          <div class="invalid-feedback">
+          <div class="invalid-control">
             Amount must be specified
           </div>
         </div>
@@ -169,7 +169,7 @@
             placeholder="Eg.: Shopping" [ngClass]="((userSalaryForm.get('salary')?.dirty || userSalaryForm.get('salary')?.touched) && 
               (userSalaryForm.get('salary')?.invalid)) ? 'is-invalid' : ''">
           <label for="salaryFloatingInput">Salary</label>
-          <div class="invalid-feedback">
+          <div class="invalid-control">
             Salary must be specified
           </div>
         </div>

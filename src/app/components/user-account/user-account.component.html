@@ -40,10 +40,26 @@
                     </button>
                   </td>
                   <td>
-                    <input type="text" class="form-control" formControlName="name" placeholder="Eg: My Account">
+                    <input type="text" class="form-control" formControlName="name" placeholder="Eg: My Account"
+                      [ngClass]="(accountForm.get('name')!.touched || accountForm.get('name')!.dirty) && 
+                    accountForm.get('name')!.invalid ? 'is-invalid' : ''" maxlength="255">
+                    <div *ngIf="(accountForm.get('name')!.touched || accountForm.get('name')!.dirty) && 
+                      accountForm.get('name')!.invalid">
+                      <div *ngIf="accountForm.get('name')!.errors!['required']" class="invalid-control">
+                        Account name must be specified
+                      </div>
+                    </div>
                   </td>
                   <td>
-                    <input type="number" class="form-control" formControlName="amount" placeholder="Eg: 10000">
+                    <input type="number" class="form-control" formControlName="amount" placeholder="Eg: 10000"
+                      [ngClass]="(accountForm.get('amount')!.touched || accountForm.get('amount')!.dirty) && 
+                    accountForm.get('amount')!.invalid ? 'is-invalid' : ''">
+                    <div *ngIf="(accountForm.get('amount')!.touched || accountForm.get('amount')!.dirty) && 
+                      accountForm.get('amount')!.invalid">
+                      <div *ngIf="accountForm.get('amount')!.errors!['required']" class="invalid-control">
+                        Amount must be specified
+                      </div>
+                    </div>
                   </td>
                   <td class="text-center">
                     <button type="reset" class="btn" (click)="cancelEdit(userAccount)">

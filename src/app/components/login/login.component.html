@@ -1,36 +1,48 @@
-<div class="d-flex flex-column justify-content-center h-100vh">
-  <div class="container">
-    <div class="d-flex justify-content-center">
-      <div class="card card-width rounded shadow">
-        <div class="card-body">
-          <div class="card-title text-justify">
-            <h3><strong>Login</strong></h3>
-            <p class="card-subtitle">Hey, Enter your details to get sign in to your account</p>
-          </div>
-          <div class="pt-3">
-            <div class="d-flex flex-column">
-              <form [formGroup]="loginForm">
-                <div class="form-floating mb-3">
-                  <input formControlName="username" type="text" class="form-control" id="usernameFloatingInput"
-                    placeholder="Enter username">
-                  <label for="usernameFloatingInput">Username</label>
+<div class="container my-10">
+  <div class="d-flex justify-content-center">
+    <div class="card card-width rounded shadow">
+      <div class="card-body">
+        <div class="card-title text-justify">
+          <h3><strong>Login</strong></h3>
+          <p class="card-subtitle">Hey, Enter your details to get sign in to your account</p>
+        </div>
+        <div class="pt-3">
+          <div class="d-flex flex-column">
+            <form [formGroup]="loginForm">
+              <div class="form-floating mb-3">
+                <input formControlName="username" type="text" class="form-control" id="usernameFloatingInput"
+                  placeholder="Enter username" [ngClass]="(loginForm.get('username')!.touched || loginForm.get('username')!.dirty) && 
+                  loginForm.get('username')!.invalid ? 'is-invalid' : ''" maxlength="255">
+                <label for="usernameFloatingInput">Username</label>
+                <div *ngIf="(loginForm.get('username')!.touched || loginForm.get('username')!.dirty) && 
+                loginForm.get('username')!.invalid">
+                  <div *ngIf="loginForm.get('username')!.errors!['required']" class="invalid-control">
+                    Username must be specified
+                  </div>
                 </div>
-                <div class="form-floating mb-3">
-                  <input formControlName="password" type="password" class="form-control" id="passwordFloatingInput"
-                    placeholder="Password">
-                  <label for="passwordFloatingInput">Password</label>
-                </div>
-                <div class="mb-3">
-                  <button type="submit" class="btn-blue w-100 py-2 rounded" (click)="validateForm()">
-                    <strong>Sign in</strong>
-                  </button>
-                </div>
-              </form>
-              <div class="pt-3">
-                <label>Don't have an account?</label>
-                <a class="anchor-tag cursor-pointer" (click)="navigateToRegister()"> Register Now</a>
-                <!-- <button type="button" class="btn btn-default p-0" (click)="navigateToRegister()"> Register Now</button> -->
               </div>
+              <div class="form-floating mb-3">
+                <input formControlName="password" type="password" class="form-control" id="passwordFloatingInput"
+                  placeholder="Password" [ngClass]="(loginForm.get('password')!.touched || loginForm.get('password')!.dirty) && 
+                  loginForm.get('password')!.invalid ? 'is-invalid' : ''" maxlength="255">
+                <label for="passwordFloatingInput">Password</label>
+                <div *ngIf="(loginForm.get('username')!.touched || loginForm.get('username')!.dirty) && 
+                loginForm.get('username')!.invalid">
+                  <div *ngIf="loginForm.get('password')!.errors!['required']" class="invalid-control">
+                    Password must be specified
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <button type="submit" class="btn-blue w-100 py-2 rounded" (click)="validateForm()">
+                  <strong>Login in</strong>
+                </button>
+              </div>
+            </form>
+            <div class="pt-3">
+              <label>Don't have an account?</label>
+              <a class="anchor-tag cursor-pointer" (click)="navigateToRegister()"> Register Now</a>
+              <!-- <button type="button" class="btn btn-default p-0" (click)="navigateToRegister()"> Register Now</button> -->
             </div>
           </div>
         </div>
@@ -38,7 +50,6 @@
     </div>
   </div>
 </div>
-
 
 <ng-template #messageTemplate>
   <span class="toast-font"><strong>{{message}}</strong></span>

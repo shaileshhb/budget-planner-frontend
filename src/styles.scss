@@ -32,10 +32,11 @@ html {
   scroll-behavior: smooth;
 }
 
-.h-100vh {
-  height: 100vh;
-}
+// .h-100vh {
+//   height: 100vh;
+// }
 
+// ===================================== WIDTHS =====================================
 .w-5 {
   width: 5%;
 }
@@ -44,6 +45,23 @@ html {
   width: 10%;
 }
 
+// ===================================== MARGINS =====================================
+.my-10 {
+  margin-top: 10rem !important;
+  margin-bottom: 10rem !important;
+}
+
+.mt-10 {
+  margin-top: 10rem !important;
+}
+
 .cursor-pointer {
   cursor: pointer;
+}
+
+.invalid-control {
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.875em;
+  color: #dc3545;
 }

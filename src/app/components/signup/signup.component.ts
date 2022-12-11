@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CredentialService, ICredential } from 'src/app/service/credential/credential.service';
 import { LocalService } from 'src/app/shared/service/local/local.service';
@@ -32,10 +32,12 @@ export class SignupComponent implements OnInit {
   }
 
   signupForm: FormGroup = new FormGroup({
-    name: new FormControl<string | null>(null),
-    username: new FormControl<string | null>(null),
-    email: new FormControl<string | null>(null),
-    password: new FormControl<string | null>(null),
+    name: new FormControl<string | null>(null, [Validators.required, Validators.minLength(3), Validators.maxLength(255)]),
+    username: new FormControl<string | null>(null, [Validators.required, Validators.minLength(3), Validators.maxLength(255)]),
+    email: new FormControl<string | null>(null, [Validators.required, Validators.minLength(3), Validators.maxLength(255)]),
+    password: new FormControl<string | null>(null, [Validators.required,
+    Validators.pattern(/^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W\_]){1,})(?!.*\s).{8,20}$/),
+    Validators.minLength(3), Validators.maxLength(255)]),
     dateOfBirth: new FormControl<string | null>(null),
     gender: new FormControl<string | null>(null),
     contact: new FormControl<string | null>(null),
@@ -43,15 +45,15 @@ export class SignupComponent implements OnInit {
     profileImage: new FormControl<string | null>(null),
   })
 
-  
+
   validateForm(): void {
     console.log(this.signupForm.controls);
-    
+
     if (this.signupForm.invalid) {
       this.signupForm.markAllAsTouched()
       return
     }
-    
+
     this.register()
   }
 
@@ -66,7 +68,7 @@ export class SignupComponent implements OnInit {
         this.localService.setJsonValue("name", this.credential?.name)
         this.localService.setJsonValue("token", this.credential?.token)
         this.localService.setJsonValue("isVerified", this.credential?.isVerified)
-        this.router.navigate(["envelop", "dashboard"])
+        this.router.navigate(["account"])
       },
       error: (err: any) => {
         console.error(err);

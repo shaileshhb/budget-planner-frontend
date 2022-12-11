@@ -1,63 +1,116 @@
-<div class="h-100vh d-flex flex-column justify-content-center">
-  <div class="container">
-    <div class="d-flex justify-content-center py-5">
-      <div class="card card-width rounded shadow">
-        <div class="card-body">
-          <div class="card-title text-justify">
-            <h3><strong>Create Account</strong></h3>
-            <p class="card-subtitle">Hey, Enter your details to get registered</p>
-          </div>
-          <div class="pt-3">
-            <div class="d-flex flex-column">
-              <form [formGroup]="signupForm">
-                <div class="form-floating mb-3">
-                  <input formControlName="name" type="text" class="form-control" id="nameFloatingInput"
-                    placeholder="Enter your name">
-                  <label for="nameFloatingInput">Name</label>
+<div class="container my-2">
+  <div class="d-flex justify-content-center py-5">
+    <div class="card card-width rounded shadow">
+      <div class="card-body">
+        <div class="card-title text-justify">
+          <h3><strong>Create Account</strong></h3>
+          <p class="card-subtitle">Hey, Enter your details to get registered</p>
+        </div>
+        <div class="pt-3">
+          <div class="d-flex flex-column">
+            <form [formGroup]="signupForm">
+              <div class="form-floating mb-3">
+                <input formControlName="name" type="text" class="form-control" id="nameFloatingInput"
+                  placeholder="Enter your name" [ngClass]="(signupForm.get('name')!.touched || signupForm.get('name')!.dirty) && 
+                  signupForm.get('name')!.invalid ? 'is-invalid' : ''" maxlength="255">
+                <label for="nameFloatingInput">Name</label>
+                <div *ngIf="signupForm.get('name')!.touched && signupForm.get('name')!.invalid">
+                  <div *ngIf="signupForm.get('name')!.errors!['required']" class="invalid-control">
+                    Name must be specified
+                  </div>
+                  <div *ngIf="signupForm.get('name')!.errors!['minlenght']" class="invalid-control">
+                    Invalid name specified
+                  </div>
+                  <div *ngIf="signupForm.get('name')!.errors!['maxlenght']" class="invalid-control">
+                    Name cannot consist of more than 255 characters
+                  </div>
                 </div>
-                <div class="form-floating mb-3">
-                  <input formControlName="username" type="text" class="form-control" id="usernameFloatingInput"
-                    placeholder="Enter your username">
-                  <label for="usernameFloatingInput">Username</label>
-                </div>
-                <div class="form-floating mb-3">
-                  <input formControlName="email" type="email" class="form-control" id="emailFloatingInput"
-                    placeholder="Enter email address">
-                  <label for="emailFloatingInput">Email address</label>
-                </div>
-                <div class="form-floating mb-3">
-                  <input formControlName="password" type="password" class="form-control" id="passwordFloatingInput"
-                    placeholder="Password">
-                  <label for="passwordFloatingInput">Password</label>
-                </div>
-                <div class="form-floating mb-3">
-                  <input formControlName="dateOfBirth" type="date" class="form-control" id="dobFloatingInput">
-                  <label for="dobFloatingInput">Date of birth</label>
-                </div>
-                <div class="form-floating mb-3">
-                  <select formControlName="gender" class="form-select" id="floatingSelect" aria-label="Select gender">
-                    <option value="null">Select gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                  </select>
-                  <label for="floatingSelect">Gender</label>
-                </div>
-                <div class="form-floating mb-3">
-                  <input formControlName="contact" type="number" class="form-control" id="contactFloatingInput"
-                    placeholder="Enter your contact">
-                  <label for="contactFloatingInput">Contact</label>
-                </div>
-                <div class="mb-3">
-                  <button type="submit" class="btn-blue w-100 py-2 rounded" (click)="validateForm()">
-                    <strong>Register</strong>
-                  </button>
-                </div>
-              </form>
-              <div class="pt-3">
-                <label>Already have an account?</label>
-                <a class="anchor-tag cursor-pointer" (click)="navigateToLogin()"> Login</a>
               </div>
+              <div class="form-floating mb-3">
+                <input formControlName="username" type="text" class="form-control" id="usernameFloatingInput"
+                  placeholder="Enter your username" [ngClass]="(signupForm.get('username')!.touched || signupForm.get('username')!.dirty) && 
+                  signupForm.get('username')!.invalid ? 'is-invalid' : ''" maxlength="255">
+                <label for="usernameFloatingInput">Username</label>
+                <div *ngIf="(signupForm.get('username')!.touched || signupForm.get('username')!.dirty) && 
+                signupForm.get('username')!.invalid">
+                  <div *ngIf="signupForm.get('username')!.errors!['required']" class="invalid-control">
+                    Username must be specified
+                  </div>
+                  <div *ngIf="signupForm.get('username')!.errors!['minlenght']" class="invalid-control">
+                    Invalid username specified
+                  </div>
+                  <div *ngIf="signupForm.get('username')!.errors!['maxlenght']" class="invalid-control">
+                    Username cannot consist of more than 255 characters
+                  </div>
+                </div>
+              </div>
+              <div class="form-floating mb-3">
+                <input formControlName="email" type="email" class="form-control" id="emailFloatingInput"
+                  placeholder="Enter email address" [ngClass]="(signupForm.get('email')!.touched || signupForm.get('email')!.dirty) && 
+                  signupForm.get('email')!.invalid ? 'is-invalid' : ''" maxlength="255">
+                <label for="emailFloatingInput">Email address</label>
+                <div *ngIf="(signupForm.get('email')!.touched || signupForm.get('email')!.dirty) && 
+                signupForm.get('email')!.invalid">
+                  <div *ngIf="signupForm.get('email')!.errors!['required']" class="invalid-control">
+                    Email must be specified
+                  </div>
+                  <div *ngIf="signupForm.get('email')!.errors!['minlenght']" class="invalid-control">
+                    Invalid email specified
+                  </div>
+                  <div *ngIf="signupForm.get('email')!.errors!['maxlenght']" class="invalid-control">
+                    Email cannot consist of more than 255 characters
+                  </div>
+                </div>
+              </div>
+              <div class="form-floating mb-3">
+                <input formControlName="password" type="password" class="form-control" id="passwordFloatingInput"
+                  placeholder="Password" [ngClass]="(signupForm.get('password')!.touched || signupForm.get('password')!.dirty) && 
+                  signupForm.get('password')!.invalid ? 'is-invalid' : ''" maxlength="255">
+                <label for="passwordFloatingInput">Password</label>
+                <div *ngIf="(signupForm.get('password')!.touched || signupForm.get('password')!.dirty) && 
+                signupForm.get('password')!.invalid">
+                  <div *ngIf="signupForm.get('password')!.errors!['required']" class="invalid-control">
+                    Password must be specified
+                  </div>
+                  <div *ngIf="signupForm.get('password')!.errors!['minlenght']" class="invalid-control">
+                    Invalid password specified
+                  </div>
+                  <div *ngIf="signupForm.get('password')!.errors!['maxlenght']" class="invalid-control">
+                    Password cannot consist of more than 255 characters
+                  </div>
+                  <div *ngIf="signupForm.get('password')!.errors!['pattern']" class="invalid-control">
+                    Password must consist of minimum 8 and maximum 20 characters, at least 1 uppercase letter,
+                    1 lowercase letter, 1 number and 1 special character
+                  </div>
+                </div>
+              </div>
+              <div class="form-floating mb-3">
+                <input formControlName="dateOfBirth" type="date" class="form-control" id="dobFloatingInput">
+                <label for="dobFloatingInput">Date of birth</label>
+              </div>
+              <div class="form-floating mb-3">
+                <select formControlName="gender" class="form-select" id="floatingSelect" aria-label="Select gender">
+                  <option value="null">Select gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+                <label for="floatingSelect">Gender</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input formControlName="contact" type="number" class="form-control" id="contactFloatingInput"
+                  placeholder="Enter your contact">
+                <label for="contactFloatingInput">Contact</label>
+              </div>
+              <div class="mb-3">
+                <button type="submit" class="btn-blue w-100 py-2 rounded" (click)="validateForm()">
+                  <strong>Register</strong>
+                </button>
+              </div>
+            </form>
+            <div class="pt-3">
+              <label>Already have an account?</label>
+              <a class="anchor-tag cursor-pointer" (click)="navigateToLogin()"> Login</a>
             </div>
           </div>
         </div>
