@@ -18,7 +18,8 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.localService.getJsonValue("token")) {
-      this.router.navigate(["envelop/dashboard"])
+      this.router.navigate(["account"])
+      // this.router.navigate(["envelop/dashboard"])
       return
     }
     this.router.navigate(["login"])
