@@ -3,6 +3,8 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { IUserAccount } from 'src/app/models/IUserAccount';
+import { IUserSalary } from 'src/app/models/IUserSalary';
+import { IUser } from 'src/app/service/credential/credential.service';
 import { LocalService } from 'src/app/shared/service/local/local.service';
 import { ToastService } from 'src/app/shared/service/toast/toast.service';
 import { AccountService } from '../../service/account/account.service';
@@ -197,7 +199,7 @@ export class AccountComponent implements OnInit {
     })
   }
 
-  
+
   @ViewChild('salaryModal') salaryModal!: TemplateRef<any>
   userSalaryForm!: FormGroup
 
@@ -219,7 +221,7 @@ export class AccountComponent implements OnInit {
 
   onSaveSalaryClick(): void {
     console.log(this.userSalaryForm.controls);
-    
+
     if (this.userSalaryForm.invalid) {
       this.userSalaryForm.markAllAsTouched()
       return
@@ -253,8 +255,37 @@ export class AccountComponent implements OnInit {
     })
   }
 
-  getUserSalaries(): void {
+  userSalaries: IUserSalary[] = []
+  
+  getUserSalaries(userAccount: IUserAccount): void {
+    this.userAccounts = []
 
+    const queryparams: any = {
+      accountId: userAccount.id
+    }
+
+    this.isGetCompleted = false
+    this.salaryService.getUserSalaries(queryparams).subscribe({
+      next: (response: HttpResponse<IUserSalary[]>) => {
+        this.userSalaries = response.body!
+        console.log(this.userSalaries);
+      },
+      error: (err: any) => {
+        console.error(err);
+        this.message = err?.error?.error
+        this.toastService.show(this.messageTemplate, { classname: 'bg-danger text-light', delay: 5000 })
+      },
+      complete: () => {
+        this.isGetCompleted = true
+      }
+    })
+  }
+
+  @ViewChild("viewSalaryModal") viewSalaryModal!: TemplateRef<any>
+
+  onViewSalaryClick(userAccount: IUserAccount): void {
+    this.getUserSalaries(userAccount)
+    this.openModal(this.viewSalaryModal)
   }
 
   modalRef!: NgbModalRef

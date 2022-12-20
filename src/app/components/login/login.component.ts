@@ -37,6 +37,10 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    // if (this.localService.getJsonValue("token")) {
+    //   this.router.navigate(["account"])
+    //   return
+    // }
   }
 
   loginForm: FormGroup = new FormGroup({

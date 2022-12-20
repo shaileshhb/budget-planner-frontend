@@ -22,6 +22,7 @@
               <th class="text-center">Sr No</th>
               <th>Name</th>
               <th>Amount</th>
+              <th class="text-center">Salary</th>
               <th class="text-center">Delete</th>
             </tr>
           </thead>
@@ -32,6 +33,11 @@
                   <td class="text-center">{{ i + 1}}</td>
                   <td>{{userAccount.name}}</td>
                   <td>{{userAccount.amount}}</td>
+                  <td class="text-center">
+                    <button class="btn" type="button" (click)="onViewSalaryClick(userAccount)">
+                      <i class="material-icons-outlined text-info">payments</i>
+                    </button>
+                  </td>
                   <td class="text-center">
                     <button class="btn" type="button" (click)="onDeleteClick($event, userAccount)">
                       <i class="material-icons-outlined text-danger">delete</i>
@@ -125,6 +131,31 @@
   <span class="toast-font"><strong>{{message}}</strong></span>
 </ng-template>
 
+
+<ng-template #viewSalaryModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Salary</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Sr no</th>
+            <th>Salary</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let userSalary of userSalaries; let i = index">
+            <td>{{i + 1}}</td>
+            <td>{{userSalary.salary | currency: 'INR'}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-template>
 
 <ng-template #salaryModal let-modal>
   <div class="modal-header">

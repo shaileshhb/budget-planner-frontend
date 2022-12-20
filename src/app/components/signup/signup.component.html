@@ -63,8 +63,8 @@
                 </div>
               </div>
               <div class="form-floating mb-3">
-                <input formControlName="password" type="password" class="form-control" id="passwordFloatingInput"
-                  placeholder="Password" [ngClass]="(signupForm.get('password')!.touched || signupForm.get('password')!.dirty) && 
+                <input formControlName="password" [type]="isPasswordVisible ? 'text' : 'password'" class="form-control"
+                  id="passwordFloatingInput" placeholder="Password" [ngClass]="(signupForm.get('password')!.touched || signupForm.get('password')!.dirty) && 
                   signupForm.get('password')!.invalid ? 'is-invalid' : ''" maxlength="255">
                 <label for="passwordFloatingInput">Password</label>
                 <div *ngIf="(signupForm.get('password')!.touched || signupForm.get('password')!.dirty) && 
@@ -83,6 +83,12 @@
                     1 lowercase letter, 1 number and 1 special character
                   </div>
                 </div>
+              </div>
+              <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" (change)="isPasswordVisible = !isPasswordVisible"
+                  id="showPassword">
+                <label class="form-check-label cursor-pointer" for="showPassword">Show Password
+                </label>
               </div>
               <div class="form-floating mb-3">
                 <input formControlName="dateOfBirth" type="date" class="form-control" id="dobFloatingInput">
@@ -103,7 +109,8 @@
                 <label for="contactFloatingInput">Contact</label>
               </div>
               <div class="mb-3">
-                <button type="submit" class="btn-blue w-100 py-2 rounded" (click)="validateForm()">
+                <button type="submit" class="btn-blue w-100 py-2 rounded" [disabled]="!signupForm.dirty"
+                  (click)="validateForm()">
                   <strong>Register</strong>
                 </button>
               </div>

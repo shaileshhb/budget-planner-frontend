@@ -18,8 +18,8 @@ export class SalaryService {
     private localService: LocalService,
   ) { }
 
-  getUserSalaries(params?: HttpParams): Observable<HttpResponse<IUserAccount[]>> {
-    return this.httpClient.get<IUserAccount[]>(`${this.baseURL}/user-salary`, {
+  getUserSalaries(params?: HttpParams): Observable<HttpResponse<IUserSalary[]>> {
+    return this.httpClient.get<IUserSalary[]>(`${this.baseURL}/user-salary`, {
       headers: new HttpHeaders({ "Authorization": "Bearer " + this.localService.getJsonValue("token") }),
       observe: "response", params: params
     })

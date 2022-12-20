@@ -8,7 +8,7 @@ import { LocalService } from './shared/service/local/local.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  
+
   // isNavbarVisible: boolean = false;
 
   constructor(
@@ -17,12 +17,9 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if (this.localService.getJsonValue("token")) {
-      this.router.navigate(["account"])
-      // this.router.navigate(["envelop/dashboard"])
-      return
+    if (!this.localService.getJsonValue("token")) {
+      this.router.navigate(["login"])
     }
-    this.router.navigate(["login"])
   }
 
   get isNavbarVisible(): boolean {

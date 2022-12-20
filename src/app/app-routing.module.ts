@@ -26,6 +26,9 @@ const routes: Routes = [
     path: "envelop",
     loadChildren: () => import("./envelop/envelop.module").then(e => e.EnvelopModule)
   },
+  {
+    path: "", pathMatch: "full", redirectTo:"/account"
+  }
 ];
 
 @NgModule({

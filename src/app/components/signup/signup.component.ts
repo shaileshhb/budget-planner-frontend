@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CredentialService, ICredential } from 'src/app/service/credential/credential.service';
 import { LocalService } from 'src/app/shared/service/local/local.service';
@@ -15,6 +15,7 @@ import { LocalService } from 'src/app/shared/service/local/local.service';
     CommonModule,
     ReactiveFormsModule,
     HttpClientModule,
+    FormsModule,
   ],
   providers: [
     CredentialService,
@@ -30,6 +31,8 @@ export class SignupComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  isPasswordVisible: boolean = false
 
   signupForm: FormGroup = new FormGroup({
     name: new FormControl<string | null>(null, [Validators.required, Validators.minLength(3), Validators.maxLength(255)]),
