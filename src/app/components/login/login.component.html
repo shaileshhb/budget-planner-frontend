@@ -22,9 +22,10 @@
                 </div>
               </div>
               <div class="form-floating mb-3">
-                <input formControlName="password" type="password" class="form-control" id="passwordFloatingInput"
-                  placeholder="Password" [ngClass]="(loginForm.get('password')!.touched || loginForm.get('password')!.dirty) && 
-                  loginForm.get('password')!.invalid ? 'is-invalid' : ''" maxlength="255">
+                <input formControlName="password" [type]="isPasswordVisible ? 'text' : 'password'"
+                  id="passwordFloatingInput" placeholder="Password" maxlength="255" class="form-control" 
+                  [ngClass]="(loginForm.get('password')!.touched || loginForm.get('password')!.dirty) && 
+                    loginForm.get('password')!.invalid ? 'is-invalid' : ''">
                 <label for="passwordFloatingInput">Password</label>
                 <div *ngIf="(loginForm.get('username')!.touched || loginForm.get('username')!.dirty) && 
                 loginForm.get('username')!.invalid">
@@ -33,9 +34,14 @@
                   </div>
                 </div>
               </div>
+              <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" (change)="isPasswordVisible = !isPasswordVisible" id="showPassword">
+                <label class="form-check-label cursor-pointer" for="showPassword">Show Password
+                </label>
+              </div>
               <div class="mb-3">
-                <button type="submit" class="btn-blue w-100 py-2 rounded" (click)="validateForm()">
-                  <strong>Login in</strong>
+                <button type="submit" class="btn-blue w-100 py-2 rounded" (click)="validateForm()" [disabled]="!loginForm.dirty">
+                  <strong>Login</strong>
                 </button>
               </div>
             </form>

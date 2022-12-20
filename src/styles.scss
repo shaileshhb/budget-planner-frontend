@@ -10,7 +10,7 @@
   --light-blue: #f0f8ff;
   --primaryButtonColor: var(--primaryColor);
   --secondaryButtonColor: var(--secondaryColor);
-
+  --grey: #aeaeae;
 }
 
 .bg-lg-blue {
@@ -21,6 +21,12 @@
   background-color: var(--blue);
   color: #fff;
   border: 1px solid var(--blue);
+}
+
+.btn-blue:disabled {
+  background-color: var(--grey);
+  color: #fff;
+  border: 1px solid var(--grey);
 }
 
 .blue {
