@@ -3,7 +3,7 @@ https://dribbble.com/shots/17042299-MoneyKarma-Dashboard-Elements
 
 
 deploying to github pages
-ng build --output-path docs --base-href /repository-name/
+ng build --output-path docs --base-href /budget-planner-frontend/
 
 - output-path is used to output in a different folder rather than the default dist
 - base-href allows us to tell the application the base path
